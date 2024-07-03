@@ -1,0 +1,77 @@
+---
+title: "Final Analisis"
+author: "Luis Tujab 1103920"
+date: "2023-11-21"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(useful)
+
+
+
+```
+#Estadisticas general
+```{r}
+data <- read.csv("Mall_Customers.csv")
+data
+summary(data)
+```
+#Limpieza de los datos eliminar ID 
+```{r}
+dataLim <- data [,-c(1)]
+summary(dataLim)
+```
+#Covertir el genero en un 0 o 1 -> 0 para hombre y 1 para mujer 
+```{r}
+dataLim$Genre <- ifelse(dataLim$Genre == "Female",1,0)
+dataLim$Genre <- as.integer(dataLim$Genre)
+dataLim
+```
+#Nulos por columna 
+```{r}
+Nulos <- colSums(is.na(dataLim))
+Nulos
+```
+
+#Metodo del kmeans 3 centros como prueba 
+```{r}
+datTrain <- kmeans(dataLim, centers = 3)
+plot(datTrain, data = dataLim)
+
+```
+#Cuadro de clusters y error para la grafica de codo 
+```{r}
+Gew <- data.frame(matrix(ncol = 2, nrow = 0))
+  colnames(Gew) <- c("Clusters", "Error")
+  for (i in 1:20)
+  {
+    datTrain <- kmeans(x= dataLim, centers = i)
+    Gew[i-1,] <- c(i, datTrain$tot.withinss)
+  }
+Gew
+```
+#Grafica de codo
+```{r}
+ggplot(data = Gew, aes(x = Clusters, y = Error)) + 
+  geom_line() + 
+  geom_point() + 
+  theme_light()
+```
+#Grafica con todos los centros solo de demostración 
+```{r}
+plot(datTrain, data = dataLim)
+```
+
+#Grafica con el numero de clusters 
+```{r}
+datTrain <- kmeans(dataLim, centers = 7)
+plot(datTrain, data = dataLim)
+```
+

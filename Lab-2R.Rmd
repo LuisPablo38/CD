@@ -1,0 +1,134 @@
+---
+title: "Lab 2R"
+author: "Luis Tujab 1103920"
+date: "2023-10-12"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r cars}
+summary(cars)
+```
+```{r}
+data <-read.csv2("hour.csv")
+  data$temp <- as.numeric(data$temp)
+  data$atemp <- as.numeric(data$atemp)
+  data$windspeed <- as.numeric(data$windspeed)
+  data$hum <- as.numeric(data$hum)
+  data
+```
+
+#2 HOra de la mayor demanda 
+```{r}
+DatosHora <- data %>%
+  group_by(hr) %>%
+  summarize(CantidadDemanda=sum(cnt)) 
+
+DatosHora<-DatosHora %>%
+  arrange(desc(CantidadDemanda))
+DatosHora
+```
+#3.Temporada (season) es la mas alta
+```{r}
+DatosSeason<- data %>%
+  group_by(season) %>%
+  summarize(TemporadaAlta=sum(cnt))
+
+DatosSeason<- DatosSeason %>%
+  arrange(desc(TemporadaAlta))
+
+DatosSeason
+
+```
+#4. A que temperatura baja la demanda
+```{r}
+DatosTempe <- data%>%
+  group_by(temp)%>%
+  summarize(BajaDemanda = sum(cnt))
+
+DatosTempe_Orden <- DatosTempe[order(DatosTempe$BajaDemanda), ]
+  
+DatosTempe
+  
+
+```
+#5. A que humedad baja la demanda
+```{r}
+DatosHumedad<- data
+    ggplot(DatosHumedad) + aes(x=DatosHumedad$hum) + 
+      geom_density(col = "blue")
+    theme_dark()
+  
+
+```
+#6. Condiciones climaticas serian ideales para la demanda 
+```{r}
+DatosClima<-data 
+ggplot(DatosClima) + aes(x= DatosClima$weathersit) + 
+  geom_density(fill = "orange")
+  
+```
+#7.Densidad de rentas
+```{r}
+Densi_Ventas<- data
+ggplot(Densi_Ventas) + aes(x = Densi_Ventas$registered)+
+      geom_density(fill = "gray")
+```
+#8. Determine promedio de personas que rentan bicicletas y estan registradas 
+```{r}
+  data %>%
+  summarise(avg_registrados = mean(registered, na.rm = TRUE))
+
+```
+```{r}
+#9 mediana de personas que rentan bicicleta y no estan registradas
+
+data %>%
+  summarise(median_NoRegistrados = median(casual, na.rm = TRUE))
+```
+
+```{r}
+
+```
+
+```{r}
+ggplot(data, aes(x=season)) + 
+  geom_bar(width = 0.5, colour= "red", fill = "skyblue") + 
+    labs(x="Temporada", y = "cantidad") + 
+  ggtitle("Renta por temporada") + 
+  theme_dark()
+```
+
+
+```{r}
+
+  ggplot(data, aes(x= hr, y=cnt)) + 
+      geom_density_2d(aes(fill = ..level..)) +
+  labs(title = "Densidad por hora", x= "Hora", y="Densidad")+
+  scale_fill_viridis_c()
+   theme_dark()
+  
+
+
+
+```
+#13 Grafica de barras por dia del mes X total de alquileres Y 
+```{r}
+ggplot(data, aes(x = dteday)) +
+  geom_bar(width = 0.5, fill = "green") +
+  labs(x = "Dias del mes", y= "Total Alquileres") + 
+  scale_fill_viridis_c()
+  theme_dark()
+  
+
+```
+

@@ -1,0 +1,26 @@
+Pasos para el diseño dimensional 
+	1. Seleccionar el proceso de negocio 
+		1. Se expresa en verbos, dimensión contexto a cada evento del proceso, generan o capturan KPIs (numérica mente)
+	2. Declarar el nivel de granularidad (nivel de detalle)
+		1. Definir lo que representa cada registro de la tabla de hechos, muestra las realidades físicas del sistema operacional que capturan los eventos 
+	3. Identificar las dimensiones 
+		1. Datos que resultan de los eventos : Dimensiones que representan quien, qué, donde, cuando, por qué y como 
+	4. Identificar los hechos   
+		Hecho: algo numérico, ventas, compras  ¿Qué mide este proceso?  Debe cumplir con la definición de granularidad 
+		
+Ejemplo supermercado 
+
+	Paso 1
+		Venta por producto individual en una transacción de POS 
+	Paso 2 
+		Atómicos: mayor flexibilidad analítica pueden ser filtrados y agrupados. Entre mas detalle mejor 
+	Paso 3 
+		Fecha, tienda, producto, cajero, metodo de pago 
+	Paso 4 
+		Cantidad de venta, precio regular, descuentos, moneda en la que se paga 
+		
+En una dimensión se guarda una jerarquía 
+	
+Solo debe ser una tabla de hechos 
+
+Tarea en la parte de practica 

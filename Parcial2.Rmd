@@ -1,0 +1,114 @@
+---
+title: "Parcial2"
+author: "Luis Tujab 1103920"
+date: "2023-11-06"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+summary(cars)
+```
+#Librerias
+```{r}
+library(corrplot)
+library(caret)
+library(dplyr)
+library(ggplot2)
+```
+#Cargar data 
+```{r}
+data2 <- read.csv2("ingredientes.csv")
+
+
+summary(data)
+
+```
+#Dividir el dataset
+```{r}
+
+```
+
+
+#Funcion para los NA
+```{r}
+DetectarNA <-  function(data2, tipo)
+{
+    #Determinar que columnas tienen datos faltantes 
+    colNA <- colnames(data2)[!complete.cases(t(data))]
+    
+    # 1.2 substraer las columnas con datos faltanes
+    IncompleteData <- data2 %>% 
+                      select(colNA)
+    
+    #1.3 calcular porcentaje de datos faltantes apply(datos faltantes, 1 fila o 2 columan,  funcion )
+    
+    PorcentajeNA <- as.data2.frame(apply(IncompleteData,2,function(col) sum(is.na(col))/ length(col) )) 
+    colnames(PorcentajeNA) <- c("Porcentaje")
+    PorcentajeNA
+    
+    #Determinar columnas que si son procesables (las que cumplen con valores abajo del 5%)
+    
+    colPros <- PorcentajeNA %>% 
+                    filter(PorcentajeNA <= 0.06)
+    colPros
+    
+    if(tipo == 0)
+    {
+      return(ColumnasProcesables)
+    }
+    else 
+    {
+      return(ColumnasNoProcesables)
+    }
+}
+
+data3 <- data2
+DataImputatio <- function(data3, colname, tipo) {
+  if (tipo == "media"){
+    data3[,colname] <- ifelse(is.na(data3[,colname]),
+                              mean(data3[,colname],na.rm=T),
+                              data1[,colname])
+  }
+  else 
+  {
+    data3[,colname] <- ifelse(is.na(data3[,colname]),
+                              median(data3[,colname],na.rm=T),
+                              data3[,colname])
+    
+  }
+}
+```
+#Dividir datos para entrenar 80% y 20% pruebas
+```{r}
+set.seed(123)
+traningsamples<- data2$Cured %>%
+  
+                createDataPartition(p=0.8, list = FALSE)
+
+traindata <- data[traningsamples,]
+testdata <- data[-traningsamples,]
+
+```
+
+#Experimentacion 
+```{r}
+
+model <- glm(X2urvived~Pclass + Sex,data = traindata, family = binomial)
+             summary(model)
+```
+```{r}
+  predictionValue <- model %>% predict(testdata,type = "response")
+  predictionValue <- ifelse(predictionValue>=0.5,1,0)
+  
+  predictionValue <- as.factor(predictionValue)
+  testdata$Cured <- as.factor(testdata$XCured)
+  
+  example <- confusionMatrix(data=predictionValue, reference=testdata$X2urvived, mode="everything")
+  example
+```
+

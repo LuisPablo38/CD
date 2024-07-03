@@ -1,0 +1,173 @@
+---
+title: "Laboratorio 1 Luis Tujab"
+author: "Luis Tujab 1103920"
+date: "2023-10-05"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Este es el documento entregable 
+```{r}
+gatos <- data.frame(color= c("blanco","Negro","gris"),
+       peso = c(1,2,3),
+       propietario = c(1,0,1))
+
+gatos
+```
+
+```{r}
+gatos$peso <- gatos$peso*2
+gatos
+```
+```{r}
+paste ("el gato es color: ", gatos$color)
+```
+```{r}
+class(gatos)
+class(gatos$peso)
+class(gatos$color)
+str(gatos)
+
+
+```
+```{r}
+mi_vector <- c(2,6,"3")
+class(mi_vector)
+char_to_number <- as.numeric(mi_vector)
+class(char_to_number)
+```
+
+
+```{r}
+
+gatos$propietario <- as.logical(gatos$propietario)
+gatos
+```
+Agregar librerias
+
+```{r}
+library(nycflights13)
+library(dplyr)
+```
+
+
+```{r}
+flights
+
+```
+
+```{r}
+glimpse(flights)
+```
+
+
+```{r}
+
+```
+```{r}
+flights$carrier <- as.factor(flights$carrier)
+glimpse(flights)
+```
+```{r}
+data <- dplyr::select(flights,-year)
+
+```
+
+
+
+```{r}
+flights %>% 
+  select(contains("time"))
+```
+```{r}
+table(flights$origin) #Cantidades a partir de una tabla
+prop.table(table(flights$origin)) #Porcentajes a partir de una talba
+```
+```{r}
+
+
+data <- table(flights$origin)
+barplot(data,
+        xlab = "Aeropuerto",
+        ylab="Cantidad de vuelos",
+        main = "vuelos aeropuerto",
+        col = rainbow(3),
+        space=c(0),
+        ylim=c(0.130000))
+```
+```{r}
+
+dep_delays <- flights %>%
+              filter(dep_delays >= 60)
+nrow(dep_delays)
+
+
+```
+```{r}
+arr_delays <- flights %>%
+                filter(arr_delays >= 60)
+nrow(arr_delays)
+```
+```{r}
+datafiltrada <- flights %>%
+                  filter(carrier %in% c("UA", "AA"))
+datafiltrada
+
+```
+```{r}
+
+datafiltrada <- flights %>%
+                  filter(hour%in% c(0:5))
+
+datafiltrada
+```
+```{r}
+dplyr::select(flights,-year)
+```
+```{r}
+data1 <-flights %>%
+          mutate(speed = ((distance/1.605)/(air_time/60)))
+data1
+```
+
+```{r}
+data1.origen2 <- flights %>%
+                  group_by(origin) %>%
+                    summarise(cantidad=n(), media= mean(dep_time, na.rm = TRUE))
+data1.origen2
+```
+
+```{r}
+library(ggplot2)
+
+flights %>%
+      ggplot(aes(x=arr_delay, y=..density..)) + 
+      geom_density(col="red", fill="blue") + 
+      xlab("minutos de delay (arrival)") + 
+      ylab("Densidad")
+      theme_classic()
+```
+```{r}
+summary(flights)
+```
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

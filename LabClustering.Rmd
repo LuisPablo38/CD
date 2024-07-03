@@ -1,0 +1,103 @@
+---
+title: "LabClustering"
+author: "Luis Tujab 1103920"
+date: "2023-11-18"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(useful)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+data <- read.csv("segmentation data.csv")
+data
+summary(data)
+
+```
+#Eliminar la columna 1 de ID
+```{r}
+dataLim <- data [,-c(1)]
+summary(dataLim)
+```
+#Nulos por columna
+```{r}
+Nulos <- colSums(is.na(dataLim))
+Nulos
+```
+```{r}
+dataLim
+```
+#Estandarización 
+```{r}
+media_edad <- mean(dataLim$Age)
+desviacion_edad <- sd(dataLim$Age)
+
+
+dataLim$EdadesEst <- (dataLim$Age - media_edad) / desviacion_edad
+dataLim
+```
+```{r}
+dataLim$Income_estandar <- scale(dataLim$Income)
+
+head (dataLim)
+```
+
+```{r}
+datateset <- dataLim[,which(names(dataLim)!="Income")]
+
+train <- kmeans(datateset, centers = 3)
+
+```
+```{r}
+train
+```
+
+```{r}
+train <- kmeans(x=datateset, centers = 3)
+plot(train, data = datateset)
+```
+```{r}
+summary(data$Income)
+summary(dataLim$Income)
+```
+
+```{r}
+ssw <- dataLim 
+for (
+  i in 2:25) {
+  
+  kmeans_res <- kmeans(dataLim, centers = i, nstart = 25)
+  ssw[i] <- kmeans_res$tot.withinss
+  
+}
+```
+```{r}
+Codo <- data.frame(K = 2:9, SSW = ssw)
+```
+```{r}
+ggplot(Codo, aes(x=K, y= ssw)) + 
+  geom_line() + 
+  geom_point() + 
+  labs(title = "Grafico de codo", 
+       x = "Numero de clusters", 
+       y = "Suma de cuadrados" ) + theme_classic()
+```
+```{r}
+Kmeans_err <- data.frame ( cluster = 225:kmeans_res$centers, 
+                           tot.withinss = kmeans_res$tot.withinss
+  
+)
+```
+
+```{r}
+print(Kmeans_err)
+```
+

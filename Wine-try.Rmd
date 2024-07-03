@@ -1,0 +1,63 @@
+---
+title: "Wine-demo"
+author: "Luis Tujab 1103920"
+date: "2023-11-14"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+summary(cars)
+```
+
+```{r}
+library(useful)
+library(ggplot2)
+
+
+
+```
+```{r}
+data <- read.csv("wine2.data")
+data
+summary(data)
+
+```
+
+
+```{r}
+winedatateset <- data[,which(names(data)!="Cultivar")]
+
+winetrain <- kmeans(winedatateset, centers = 5)
+
+```
+
+```{r}
+winetrain
+```
+```{r}
+winetrain <- kmeans(x=winedatateset, centers = 5)
+plot(winetrain, data = winedatateset)
+```
+#Calcular numero optimo de clusters 
+```{r}
+
+df <- data.frame(matrix(ncol = 2, nrow = 0))
+colnames(df) <-c("K", "Error")
+for (i in 2:25){
+  winetrain <- kmeans(x=winedatateset, centers = i)
+  df[i-1,] <- c(i,winetrain$withinss)
+}
+df
+
+```
+```{r}
+ggplot(data2 = df,aes(x=K,y=error)) + 
+    geom_line(linetype ="dashed") + 
+    geom_point()
+```
+

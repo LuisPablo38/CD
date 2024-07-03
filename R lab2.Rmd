@@ -1,0 +1,43 @@
+---
+title: "Lab2"
+author: "Luis Tujab 1103920"
+date: "2023-10-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r cars}
+summary(cars)
+```
+```{r}
+  data <-read.csv2("hour.csv")
+  data$temp <- as.numeric(data$temp)
+  data$atemp <- as.numeric(data$atemp)
+  data$windspeed <- as.numeric(data$windspeed)
+  data$hum <- as.numeric(data$hum)
+  data
+  
+```
+#1. Mes con mas demanda 
+```{r}
+ds1 <- data%>%
+  group_by(mnth) %>%
+  summarize(cantidad=sum(cnt))
+ds1 <- ds1 %>%
+    arrange(desc(cantidad))
+ds1
+
+ggplot(aes(x=factor(mnth), y=cantidad, fill=cantidad)) + 
+    geom_bar(Position= "dodge", stat="identity") + 
+    xlab ("Mes")  + 
+    ylab ("Cantidad de rentas") + 
+    title ("rentas por mes")  + 
+  geom_text(aes(label=cantidad), vjust=1.6, color="white", size=2.5)+ 
+  theme_dark()
+```
+

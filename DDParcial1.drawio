@@ -1,0 +1,47 @@
+<mxfile host="app.diagrams.net" modified="2023-09-26T00:50:46.260Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.41" etag="3URjops9UjnVTEzOW1Zo" version="21.8.2" type="device">
+  <diagram name="Página-1" id="4u0GscG9keAFA0hA6FAx">
+    <mxGraphModel dx="797" dy="1682" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-1" value="Dimensión Review" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="-20" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-4" value="Numero_Reviews&lt;br&gt;Last_Review&lt;br&gt;Reviews_por_Mes&lt;br&gt;Calificacion_MasAlta&lt;br&gt;Calificacion_MasBaja&lt;br&gt;Calificacion_Condiciones&lt;br&gt;Mes_MenosReviews&lt;br&gt;Mes_MasReviews&lt;br&gt;ID_Cuenta-Review_FK" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="tbjS5oGcvWlXt_QcAMVw-1">
+          <mxGeometry x="70" y="85" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="tbjS5oGcvWlXt_QcAMVw-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="330" y="220" />
+              <mxPoint x="365" y="220" />
+              <mxPoint x="365" y="221" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-2" value="Dimensión Lugar" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="170" width="200" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-3" value="Id_Lugar_PK&lt;br&gt;Name&lt;br&gt;Neighbourhood_group&lt;br&gt;Neighbourhood&lt;br&gt;Latitud&lt;br&gt;Longuitud&lt;br&gt;Calle&amp;nbsp;&lt;br&gt;Avenida&lt;br&gt;Zona&lt;br&gt;Room_type&lt;br&gt;Cant_Cuartos&lt;br&gt;Cant_baños&lt;br&gt;Tiempo_Disponible&lt;br&gt;Cant_Parqueos&lt;br&gt;Cant_Ambientes&lt;br&gt;Tiempo_Mas_Arrendado&lt;br&gt;catidad_televisores&lt;br&gt;cantidad_baños&lt;br&gt;Cantidad_camas" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="tbjS5oGcvWlXt_QcAMVw-2">
+          <mxGeometry x="20" y="30" width="160" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="tbjS5oGcvWlXt_QcAMVw-5" target="tbjS5oGcvWlXt_QcAMVw-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="230" />
+              <mxPoint x="640" y="230" />
+              <mxPoint x="640" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-5" value="Dimensión Arrendatario" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="60" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="tbjS5oGcvWlXt_QcAMVw-6" value="Id_Arrendatario&lt;br&gt;Veces_Arrendado&lt;br&gt;Monto_Cobrado&lt;br&gt;Cantidad_Propiedades&lt;br&gt;Edad&lt;br&gt;Nombre&lt;br&gt;Apellido&lt;br&gt;Sexo&lt;br&gt;Fecha_Registro_En_Plataforma&lt;br&gt;id_Lugra_PK&lt;br&gt;ID_Cuenta-Review_PK" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="tbjS5oGcvWlXt_QcAMVw-5">
+          <mxGeometry x="70" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

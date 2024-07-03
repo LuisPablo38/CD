@@ -1,0 +1,141 @@
+---
+title: "Reg_Logaritmica"
+author: "Luis Tujab 1103920"
+date: "2023-10-23"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(corrplot)
+library(caret)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r cars}
+summary(cars)
+
+```
+```{r}
+data <- read.csv2("reglogistica.csv")
+data
+
+summary(data)
+```
+```{r}
+DetectNA <- function(data1,tipo)
+{
+  #1.1 Determinar que columnas tienen datos faltantes  
+  colsNa <- colnames(data1)[!complete.cases(t(data1))]    
+  #1.2 Substraer las columnas con datos faltantes.  
+  IncompleteData <- data1 %>%      
+            select (colsNa)  
+  #1.3 Calcular porcentaje de datos faltantes en las columnas que ya extraje     
+  porcentajesNA <- as.data1.frame(apply(IncompleteData,2,function(col) sum(is.na(col)) / 
+                                          length(col) ))   
+  
+    colnames(porcentajesNA) <- c("Porcentaje")      
+    porcentajesNA  
+  # 1.4 Determinar columnas que si son procesables (las que cumplen con valores abajo del 5%)    
+  ColumnasProcesables <- porcentajesNA %>%                          
+            filter(porcentajesNA <= 0.06)      
+    ColumnasProcesables  
+  #1.5 Encontrar columnas no procesables  
+  ColumnasNoProcesables <- porcentajesNA %>%     
+                        filter(porcentajesNA > 0.06)    
+  ColumnasNoProcesables
+  
+  if(tipo == 0)
+  {
+    return(ColumnasProcesables)
+  }
+  else 
+  {
+    return(ColumnasNoProcesables)
+  }
+  
+}
+
+
+DataImputatio <- function(data2, colname, tipo) {
+  if (tipo = "media"){
+    data2[,colname] <- ifelse(is.na(data2[,colname]),
+                              mean(data2[,colname],na.rm=T),
+                              data1[,colname])
+  }
+  else 
+  {
+    data2[,colname] <- ifelse(is.na(data2[,colname]),
+                              median(data2[,colname],na.rm=T),
+                              data2[,colname])
+    
+  }
+}
+```
+#Columnas procesables que se puedan 
+```{r}
+colsProc <- DetectNA(data1,0)
+colsProc
+
+data<- DataImputation(data, "glucose", "media")
+data<- DataImputation(data, "pressure", "media")
+data<- DataImputation(data, "mass", "median")
+summary(data)
+```
+
+```{r}
+ColsNoProc <- DetectNa(data,1)
+ColsNoProc
+
+
+
+data<-data[,-which(colMeans(is.na(data))>= 0.06)]
+data
+```
+```{r}
+data$diabetes <- ifelse(data$diabetes == "pos",1,0)
+summary(data)
+```
+
+```{r}
+  corrplot(cor(data), method= "number", type = "full")
+```
+
+#Modelado
+```{r}
+set.seed(123)
+traningsamples<- data$diabetes %>%
+  
+                createDataPartition(p=0.8, list = FALSE)
+
+traindata <- data[traningsamples,]
+testdata <- data[-traningsamples,]
+```
+
+
+```{r}
+  model <- glm(diabetes~glucose,data = data, family = binomial)
+             summary(model)
+```
+
+
+```{r}
+  predictionValue <- model %>% predict(testdata,type = "response")
+  predictionValue <- ifelse(predictionValue>=0.5,1,0)
+  
+  predictionValue <- as.factor(predictionValue)
+  testdata$diabetes <- as.factor(testdata$diabetes)
+  
+  example <- confusionMatrix(data=predictionValue, reference=testdata$diabetes, mode="everything")
+  example
+```
+#Experimento 2 
+```{r}
+
+
+```
+

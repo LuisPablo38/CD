@@ -1,0 +1,108 @@
+---
+title: "AnPar2"
+author: "Luis Tujab 1103920"
+date: "2023-11-07"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(corrplot)
+library(caret)
+library(dplyr)
+library(ggplot2)
+library(e1071)
+```
+
+
+#Cargar data 
+```{r}
+data <- read.csv2("ingredientes.csv")
+data
+summary(data)
+
+```
+#Crear la funcion para determinar NA si es que existen 
+```{r}
+DetectarNA <-  function(data, tipo)
+{
+  
+
+    #Determinar que columnas tienen datos faltantes 
+    colNA <- colnames(data)[!complete.cases(t(data))]
+    # 1.2 substraer las columnas con datos faltanes
+    IncompleteData <- data %>% 
+                      select(colNA)
+    
+    #1.3 calcular porcentaje de datos faltantes apply(datos faltantes, 1 fila o 2 columan,  funcion )
+    
+    PorcentajeNA <- as.data.frame(apply(IncompleteData,2,function(col) sum(is.na(col))/ length(col) )) 
+    colnames(PorcentajeNA) <- c("Porcentaje")
+    PorcentajeNA
+    
+    #Determinar columnas que si son procesables (las que cumplen con valores abajo del 5%)
+    
+    colPros <- PorcentajeNA %>% 
+                    filter(PorcentajeNA <= 0.06)
+    colPros
+    
+    if(tipo == 0)
+    {
+      return(ColumnasProcesables)
+    }
+    else 
+    {
+      return(ColumnasNoProcesables)
+    }
+}
+
+data2 <- data
+DataImputatio <- function(data2, colname, tipo) {
+  if (tipo == "media"){
+    data2[,colname] <- ifelse(is.na(data2[,colname]),
+                              mean(data2[,colname],na.rm=T),
+                              data1[,colname])
+  }
+  else 
+  {
+    data2[,colname] <- ifelse(is.na(data2[,colname]),
+                              median(data2[,colname],na.rm=T),
+                              data2[,colname])
+    
+  }
+}
+```
+
+```{r}
+set.seed(123)
+traningsamples<- 
+                createDataPartition(y = data$Phoenix.Feather.Unicorn.Horn.Dragon.s.Blood.Mermaid.Tears.Fairy.Dust.Goblin.Toes.Witch.s.Brew.Griffin.Claw.Troll.Hair.Kraken.Ink.Minotaur.Horn.Basilisk.Scale.Chimera.Fang.Cured, p=0.8, list = FALSE)
+
+traindata <- data[traningsamples,]
+testdata <- data[-traningsamples,]
+
+```
+#Experimentacion con la variable dependiente
+```{r}
+
+
+model <- glm(Cured~HunicornHorn+ KrakenInk,data = traindata, family = binomial)
+             summary(model)
+```
+
+
+```{r}
+  predictionValue <- model %>% predict(testdata,type = "response")
+  predictionValue <- ifelse(predictionValue>=0.5,1,0)
+  
+  predictionValue <- as.factor(predictionValue)
+  testdata$Cured <- as.factor(testdata$Cured)
+  
+  example <- confusionMatrix(data=predictionValue, reference=testdata$Cured, mode="everything")
+  example
+```

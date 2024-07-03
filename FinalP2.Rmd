@@ -1,0 +1,106 @@
+---
+title: "FinalP2"
+author: "Luis Tujab 1103920"
+date: "2023-11-21"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Carga librerias
+```{r}
+library(corrplot)
+library(caret)
+library(dplyr)
+library(ggplot2)
+library(randomForest)
+library(e1071)
+```
+
+#Leer archivo csv
+```{r}
+dataCA <- read.csv("breastcancerpred.csv")
+dataCA
+summary(dataCA)
+
+```
+#Verificar nulos 
+```{r}
+Nulos <- colSums(is.na(dataCA))
+Nulos
+```
+#Eliminar ID 
+```{r}
+dataLimP <- dataCA [,-c(1)]
+summary(dataLimP)
+```
+
+
+
+#Convertir los valores M,B en 1 y 0 -> 1 para M Y 0 PARA B 
+```{r}
+dataLimP$diagnosis <- ifelse(dataLimP$diagnosis == "M",1,0)
+dataLimP$diagnosis <- as.integer(dataLimP$diagnosis)
+dataLimP
+```
+
+
+#Dividir el dataset en 2 80% entrenamiento 20% pruebas 
+```{r}
+set.seed(123)
+training <- dataLimP$diagnosis %>%
+  
+                  createDataPartition(p=0.8, list = FALSE)
+
+traindata <- dataLimP[training,]
+testdata <- dataLimP[-training,]
+
+```
+#Experimentacion con la variable dependiente 
+```{r}
+model <- glm(diagnosis~radius_se + area_mean + concavity_mean, data = traindata, family= )
+  summary(model)
+
+  
+```
+```{r}
+  predictionValue <- model %>% predict(testdata,type = "response")
+  predictionValue <- ifelse(predictionValue>=0.5,1,0)
+  
+  predictionValue <- as.factor(predictionValue)
+  testdata$diagnosis <- as.factor(testdata$diagnosis)
+  
+  example <- confusionMatrix(data=predictionValue, reference=testdata$diagnosis, mode="everything")
+  example
+```
+#Random Forrest con grafica de los niveles de importancia para determinar si es 0, 1
+```{r}
+RandFor <- randomForest(diagnosis ~ area_mean + radius_se + concavity_mean + smoothness_mean + radius_mean, data= traindata)
+varImpPlot(RandFor)
+plot(RandFor)
+
+```
+```{r}
+Predic <- predict(RandFor, newdata = testdata)
+Predic
+
+
+
+
+
+```
+
+
+#SVM 
+```{r}
+
+SVM_MOD <- svm(diagnosis ~ area_mean + radius_se + concavity_mean, data = traindata, kernel = "linear") 
+
+```
+```{r}
+PredictSVM <- predict(SVM_MOD, newdata = testdata)
+PredictSVM
+```
+
